@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: orion-lead-webhook
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn lead_email_webhook:app
+    plan: free
