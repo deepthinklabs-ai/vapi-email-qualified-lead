@@ -1,4 +1,5 @@
 import os
+import traceback                          # <─ NEW
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Email
 from dotenv import load_dotenv
@@ -6,9 +7,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def send_lead_email(name, phone, email, product_type, volume, summary):
-    from_email = os.getenv("FROM_EMAIL", "from@example.com")
-    to_email = os.getenv("TO_EMAIL", "to@example.com")
-    reply_to_email = os.getenv("REPLY_TO_EMAIL", from_email)
+    print("🔔 send_lead_email called")     # <─ NEW  (debug)
+
+    from_email      = os.getenv("FROM_EMAIL", "from@example.com")
+    to_email        = os.getenv("TO_EMAIL", "to@example.com")
+    reply_to_email  = os.getenv("REPLY_TO_EMAIL", from_email)
 
     message = Mail(
         from_email=Email(from_email, name='Lead Notification Bot'),
@@ -35,4 +38,5 @@ def send_lead_email(name, phone, email, product_type, volume, summary):
         response = sg.send(message)
         print(f"✅ Email sent! Status: {response.status_code}")
     except Exception as e:
+        traceback.print_exc()              # <─ NEW  (debug)
         print(f"❌ SendGrid error: {e}")
